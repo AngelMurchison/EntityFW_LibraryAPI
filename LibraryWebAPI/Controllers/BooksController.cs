@@ -22,6 +22,23 @@ namespace LibraryWebAPI.Controllers
             return db.Books;
         }
 
+        // GET: api/books?checkedout=true (or false)
+        public IHttpActionResult GetChecked(bool checkedout)
+        {
+            if (checkedout)
+            {
+                return Ok(db.Books.Where(b => b.isCheckedOut == true));
+            }
+            else if (!checkedout)
+            {
+                return Ok(db.Books.Where(b => b.isCheckedOut == false));
+            }
+            else
+            {
+                return Ok(db.Books);
+            }
+        }
+
         // GET: api/Books/5
         [ResponseType(typeof(Book))]
         public IHttpActionResult GetBook(int id)
@@ -35,9 +52,9 @@ namespace LibraryWebAPI.Controllers
             return Ok(book);
         }
 
-        // PUT: api/Books/5
+        // PUT: api/Books/5 to update a book
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutBook(int id, Book book)
+        public IHttpActionResult PutBook([FromUri] int id, Book book)
         {
             if (!ModelState.IsValid)
             {
@@ -70,7 +87,53 @@ namespace LibraryWebAPI.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Books
+        // PUT: api/books?id=5&checkedout=true (or false)
+        [HttpPut]
+        public IHttpActionResult checkBook([FromUri] int id, bool checkingin)
+        {
+            var book = db.Books.First(f => f.id == id);
+            if (checkingin)
+            {
+                book.isCheckedOut = false;
+            }
+            if (!checkingin)
+            {
+                book.isCheckedOut = true;
+                book.dateLastCheckedOut = DateTime.Now;
+                book.dateDueBack = DateTime.Now.AddDays(10);
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != book.id)
+            {
+                return BadRequest();
+            }
+
+            db.Entry(book).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!BookExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        // POST: api/Books to add a book
         [ResponseType(typeof(Book))]
         public IHttpActionResult PostBook(Book book)
         {

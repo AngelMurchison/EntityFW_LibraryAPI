@@ -62,3 +62,4 @@ c:\users\angel murchison\documents\visual studio 2015\Projects\LibraryWebAPI\Lib
 c:\users\angel murchison\documents\visual studio 2015\Projects\LibraryWebAPI\LibraryWebAPI\obj\Debug\LibraryWebAPI.pdb
 c:\users\angel murchison\documents\visual studio 2015\Projects\LibraryWebAPI\LibraryWebAPI\obj\Debug\LibraryWebAPI.Migrations.Init.resources
 c:\users\angel murchison\documents\visual studio 2015\Projects\LibraryWebAPI\LibraryWebAPI\obj\Debug\LibraryWebAPI.csproj.GenerateResource.Cache
+c:\users\angel murchison\documents\visual studio 2015\Projects\LibraryWebAPI\LibraryWebAPI\obj\Debug\LibraryWebAPI.csprojResolveAssemblyReference.cache
